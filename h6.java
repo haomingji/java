@@ -1,18 +1,16 @@
-package homework14;
-
-import java.util.Scanner;
-
-import javax.print.DocFlavor.STRING;
+package homework13;
 
 public class h6 {
 public static void main(String[] args) {
-	Scanner scan =new Scanner(System.in);
-	String str1 =scan.next();
-	String str2 =scan.next();
-	if(str1.compareTo(str2)<0){
-		System.out.print(str1);
-	}else{
-		System.out.print(str2);
+	int [] a=new int[]{1,2,3,4,5,56,89,0};
+	for(int i=0;i<a.length/2;i++){
+		int temp=a[i];
+		a[i]=a[a.length-1-i];
+		a[a.length-1-i]=temp;	
+		}
+	for(int val:a){
+		System.out.print(val+" ");
+	}
 	}
 }
-}
+
