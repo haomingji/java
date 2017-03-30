@@ -1,17 +1,26 @@
-package homework13;
+package homework14;
+
+import java.util.Scanner;
 
 public class h3 {
-	public static void main(String[] args) {
-		h("220104199503305000");
+public static void main(String[] args) {
+	Scanner scan=new Scanner(System.in);
+	for(int i=0;;i++){
+		String str=scan.next(); 
+		if(str.equals("exit")){
+			break;
+		}
+		if(str.indexOf("a")==0){
+			System.out.print(str);
+			System.out.println();
+		}
+	 if(str.indexOf("b")==0){
+		for(int j=0;j<2;j++){
+			System.out.print(str+" ");
+			System.out.println();
+		}
+		
 	}
-   static void h(String s){
-    	int a=s.length();
-    	int sex=0;//Å®Îª0£»ÄÐÎª1
-    	if(a==15){
-    		sex=Integer.parseInt(s.substring(13,14))%2;
-    	}if(a==18){
-    		sex=Integer.parseInt(s.substring(16,17))%2;
-    	}
-	System.out.println(sex);
+}
 }
 }
