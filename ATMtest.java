@@ -8,7 +8,6 @@ public class ATMtest {
 	public static void main(String[] args) {
 	 M m =new M();
 	 m.init();
-	 m.login();
 	 m.item();
 }
 }
@@ -40,6 +39,7 @@ class M{
 	}
 	void getmoney(){
 		User user=userList.get(pos);
+		
 		System.out.println("È¡¶àÉÙÇ®");
 		int money=Util.getint();
 		if(user.balance-money>=0){
@@ -83,8 +83,8 @@ class M{
 			int i=Util.getint();
 			switch (i) {
 			case 1:savemoney();query();break;
-			case 2:getmoney();query();break;
-			case 3:query();
+			case 2:query();getmoney();query();break;
+			case 3:query();break;
 			case 4:tag=false;break;
 			}
 		}
