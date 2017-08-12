@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shxt.modual.userinfo.domain.userinfo">
+	<insert id="add">
+		insert into userinfo
+		(id,account,realname,sex,stat,department_id)
+		values
+		(#{id},#{account},#{realname},#{sex},#{stat},#{department_id})
+
+	</insert>
+
+	<select id="list" resultType="com.shxt.modual.userinfo.domain.userinfo">
+	select id,account,realname,sex,stat,department_name
+    from userinfo u
+    left join departments d on u.department_id=d.department_id
+	</select>
+	<select id="get" resultType="com.shxt.modual.userinfo.domain.userinfo">
+		select
+		id,account,realname,sex,stat,department_id
+		from
+		userinfo
+		where id=#{id}
+	</select>
+	<update id="edit">
+		update
+		userinfo
+		set stat=#{stat},
+	     account=#{account},
+		 realname=#{realname}
+	
+		where
+		id=#{id}
+	</update>
+	<delete id="delete">
+		delete from
+		userinfo
+		where id=#{id}
+	</delete>
+</mapper>
