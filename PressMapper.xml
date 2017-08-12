@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shxt.domain.Press">
+	
+	<!-- 查询出版社 -->
+	<select id="list" resultType="com.shxt.domain.Press">
+		SELECT press_id id,press_name FROM press
+	</select>
+	
+	<insert id="addBatch">
+		INSERT INTO press(press_id,press_name) VALUES
+		
+		<foreach collection="list" item="d" separator="," open="kk" close="qq">
+			(#{d.id},#{d.press_name})
+		</foreach>
+		
+
+		
+	</insert>
+</mapper>

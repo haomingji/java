@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shxt.domain.Book">
+	
+	<!-- 添加 -->
+	<insert id="add">
+		INSERT INTO book
+			(book_id,book_name,author,press,publish_date,price,num) 
+		VALUES
+			(#{id},#{book_name},#{author},#{press},#{publish_date},#{price},#{num})
+	</insert>
+	
+	<!-- 查看 -->
+	<select id="list" resultType="com.shxt.domain.Book">
+		SELECT book_id id,book_name,author,publish_date,price,num 
+		FROM book
+		
+		<where>
+			<if test="num != null">
+				AND	num = #{num}
+			</if>
+			<if test="id != null">
+				AND book_id = #{id}  
+			</if>
+			<if test="book_name != null">
+				AND book_name LIKE   CONCAT('%',#{book_name},'%')    <!--  '%幻%' -->  
+			</if>
+			<if test="price != null">
+				<![CDATA[
+					AND price < #{price}
+				]]>
+			</if>
+		</where>
+	
+		
+	</select>
+	
+	
+	 
+	<!--  <where>
+			<choose>
+				<when test="num != null">
+					and num = #{num}
+				</when>
+				<when test="id != null">
+					AND book_id = #{id}
+				</when>
+			</choose>
+		</where> -->
+		
+	
+	<!-- <trim prefix="where" prefixOverrides="and">
+			<if test="num != null">
+				AND	`
+			</if>
+			<if test="id != null">
+				AND book_id = #{id}
+			</if>
+		</trim> -->
+	
+	<!-- 根据id获取 -->	
+	<select id="get" resultType="com.shxt.domain.Book">
+		SELECT book_id id,book_name,author,press,publish_date,price,num FROM book WHERE book_id = #{id}
+	</select>
+	
+	<!-- 修改 -->
+	<update id="edit">
+		UPDATE book 
+		
+		<set>
+			<if test="book_name != null">
+				book_name = #{book_name},
+			</if>
+			<if test="author != null">
+				author = #{author},
+			</if>
+			<if test="price != null">
+				price = #{price},
+			</if>
+		</set>
+		
+		
+		WHERE 
+			book_id = #{id}
+	</update>
+	
+	<!-- 
+	<trim prefix="set" suffixOverrides=",">
+			<if test="book_name != null">
+				book_name = #{book_name},
+			</if>
+			<if test="author != null">
+				author = #{author},
+			</if>
+			<if test="price != null">
+				price = #{price},
+			</if>
+		</trim> -->
+	
+	<!-- 删除  -->
+	<delete id="delete">
+		DELETE FROM book WHERE book_id = #{id}
+	</delete>
+</mapper>
