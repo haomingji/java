@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shxt.modual.department.domain.Department">
+	
+	<resultMap type="com.shxt.modual.department.domain.Department" id="base">
+	    <id column="department_id" property="id"/>
+	    <result column="department_name" property="department_name"/>
+	</resultMap>
+	
+	<resultMap type="com.shxt.modual.department.domain.Department" id="all" extends="base">
+	   <!-- 一对多 -->
+	   <collection 
+	       property="userinfos"
+	       javaType="java.util.ArrayList"
+	       column="department_id"
+	       select="com.shxt.modual.userinfo.domain.userinfo.getBydepartment"
+	       ofType="com.shxt.modual.userinfo.domain.userinfo"
+	   >
+	  </collection>
+	</resultMap>
+	
+	<sql id="alias">
+	   ${a}.department_id,${a}.department_name
+	</sql>
+	
+	<sql id="baseSql">
+	   department_id,department_name
+	</sql>
+	
+	<!-- 查询出版社 -->
+	<select id="list" resultMap="base">
+		SELECT <include refid="baseSql"></include>
+		FROM departments
+	</select>
+	
+	<select id="listAll" resultMap="all">
+	select <include refid="baseSql"></include>
+	from departments
+	</select>
+	
+	
+	<select id="get" resultMap="base">
+		SELECT <include refid="baseSql"></include> 
+		FROM departments
+		where department_id=#{id}
+	</select>
+</mapper>

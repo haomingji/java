@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shxt.modual.userinfo.domain.userinfo">
+	
+	<resultMap type="com.shxt.modual.userinfo.domain.userinfo" id="base">
+	    <id column="id" property="id"/>
+	    <result column="account" property="account"/>
+	    <result column="realname" property="realname"/>
+	    <result column="sex" property="sex"/>
+	    <result column="stat" property="stat"/>
+	     <result column="department_id" property="department_id"/>
+	   </resultMap>
+	
+	
+	<resultMap type="com.shxt.modual.userinfo.domain.userinfo" id="all" extends="base" >
+	  
+	    <!-- 多对一 一次查询 -->
+	    <association property="department" resultMap="com.shxt.modual.department.domain.Department.base"></association>
+	    <!-- 多对一 1+N次查询 -->
+	<!-- <association property="department"  column="department_id" select="com.shxt.modual.department.domain.Department.get"></association> -->
+	</resultMap>
+	
+	
+	<insert id="add">
+		insert into userinfo
+		(id,account,realname,sex,stat,department_id)
+		values
+		(#{id},#{account},#{realname},#{sex},#{stat},#{department_id})
+    </insert>
+
+    <sql id="alias">
+         ${a}.id, ${a}.account, ${a}.realname, ${a}.sex, ${a}.stat, ${a}.department_id
+    </sql>
+    <sql id="baseSql">
+          id,account,realname,sex,stat,department_id
+    </sql>
+    
+	<select id="list" resultType="com.shxt.modual.userinfo.domain.userinfo">
+	      select id,account,realname,sex,stat,department_name
+          from userinfo u
+          left join departments d on u.department_id=d.department_id
+    </select>
+	
+	<select id="listAll" resultMap="all">
+	select    
+	      <include refid="alias"><property name="a" value="u"/></include>,
+	      <include refid="com.shxt.modual.department.domain.Department.alias" ><property name="a" value="d"/></include>
+	      from userinfo u
+          left join departments d on u.department_id=d.department_id
+	</select>
+	
+	<select id="get" resultType="com.shxt.modual.userinfo.domain.userinfo">
+		select
+		id,account,realname,sex,stat,department_id
+		from
+		userinfo
+		where id=#{id}
+	</select>
+	
+	
+	<select id="getBydepartment" resultMap="base">
+	   select <include refid="baseSql"></include>
+	   from userinfo
+	   where department_id=#{department_id}
+	</select>
+	
+	
+	<update id="edit">
+		update
+		userinfo
+		<set>
+	          <if test="stat!=null">
+	               stat=#{stat},
+	          </if>
+	          <if test="account!=null">
+	               account=#{account},
+	          </if>
+	          <if test="realname!=null">
+	               realname=#{realname},
+	         </if>
+	         <if test="department_id!=null">
+	               department_id=#{department_id},
+             </if>
+	    </set>
+	   where id=#{id}
+	</update>
+	
+	
+	
+	   <delete id="delete">
+		  delete from
+		  userinfo
+		  where id=#{id}
+	   </delete>
+</mapper>
