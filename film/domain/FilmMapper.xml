@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shxt.modual.film.domain.Film">
+  
+  
+  
+  
+  <resultMap type="com.shxt.modual.film.domain.Film" id="base">
+          <id column="film_id" property="id"/>
+          <result column="film_name"  property="film_name"/>
+          <result column="show_time"  property="show_time"/>
+          <result column="film_type_id"  property="film_type_id"/>
+ </resultMap>
+ <resultMap type="com.shxt.modual.film.domain.Film" id="all" extends="base">
+ <association property="filmtype" resultMap="com.shxt.modual.film.domain.FilmType.base"></association>
+ 
+ </resultMap>
+	
+	<insert id="add" >
+	  insert into film
+	   (film_id,film_name,show_time,film_type_id)
+      values
+      (#{id},#{film_name},#{show_time},#{film_type_id});
+	</insert>
+	
+	<select id="list" resultMap="base">
+	   select 
+	       film_id,film_name,show_time,film_type_id 
+	   from film
+	</select>
+	
+	<select id="getbytype" resultMap="base">
+	select  
+	film_id,film_name,show_time,film_type_id 
+	from film
+    where 
+    film_type_id=#{id}
+	
+	</select>
+	
+	<select id="listall" resultMap="all">
+	select
+	 <include refid="alias"><property name="a" value="f"/></include>,
+	 <include refid="com.shxt.modual.film.domain.FilmType.alias"><property name="a" value="ft"/></include>
+	 from film f
+	 left join film_type ft on f.film_type_id=ft.type_id
+	</select>
+	
+	<sql id="alias">
+	     ${a}.film_id,${a}.film_name,${a}.show_time,${a}.film_type_id
+	</sql>
+	
+	
+	<update id="edit">
+	update film 
+	<set>
+	<if test="film_name !=null"> film_name=#{film_name}</if>
+	<if test="show_time !=null">show_time=#{show_time}</if>
+	<if test="film_type_id !=null">film_type_id=#{film_type_id}</if>
+	
+	</set>
+	where film_id=#{id}
+	</update>
+	<delete id="delete">
+	delete from film where film_id=#{id}
+	
+	</delete>
+</mapper>

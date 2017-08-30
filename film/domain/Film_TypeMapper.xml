@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shxt.modual.film.domain.FilmType">
+
+	<resultMap type="com.shxt.modual.film.domain.FilmType" id="base">
+	    <id column="type_id" property="id"/>
+	    <result column="t_name" property="t_name"/>
+	</resultMap>
+	<resultMap type="com.shxt.modual.film.domain.FilmType" id="all" extends="base">
+	<collection 
+	     property="films"
+	     javaType="java.util.ArrayList"
+	     column="type_id"
+	     select="com.shxt.modual.film.domain.Film.getbytype"
+	     ofType="com.shxt.modual.film.domain.Film"
+></collection>
+	</resultMap>
+	
+	<sql id="alias">
+	  ${a}.type_id,${a}.t_name
+	</sql>
+	
+	<select id="listall" resultMap="all">
+	select type_id,t_name
+	from film_type
+	
+	</select>
+	
+	
+</mapper>
